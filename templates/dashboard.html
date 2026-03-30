@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<h2>My Dashboard — {{ current_user.username }}</h2>
+<div class='dashboard-grid'>
+  {% for item in my_items %}
+  <div class='dash-card'>
+    <div class='dash-card-header'>
+      <span class='badge badge-{{ item.item_type }}'>{{ item.item_type | upper }}</span>
+      <span class='badge badge-{{ item.status }}'>{{ item.status }}</span>
+      <h3>{{ item.title }}</h3>
+    </div>
+    <p>Location: {{ item.location }}</p>
+    <p>Claims received: {{ item.claims | length }}</p>
+    {% if item.claims %}
+      <div class='claims-list'>
+        <strong>Claims:</strong>
+        {% for claim in item.claims %}
+          <div class='claim-item'>
+            <p>{{ claim.claimant_name }}: {{ claim.message }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if item.status == 'open' %}
+      <a href='/resolve/{{ item._id }}/close' class='btn btn-sm btn-danger'>Mark as Resolved</a>
+    {% endif %}
+  </div>
+  {% else %}
+    <p>You have not posted any items yet. <a href='{{ url_for("post_item") }}'>Post one now!</a></p>
+  {% endfor %}
+</div>
+{% endblock %}
