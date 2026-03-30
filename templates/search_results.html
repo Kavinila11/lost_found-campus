@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Search Results — {{ query }}{% endblock %}
+{% block content %}
+<h2>Search Results for: <em>{{ query }}</em></h2>
+<p>{{ results | length }} result(s) found.</p>
+<div class='items-grid'>
+  {% for item in results %}
+  <div class='item-card'>
+    <span class='badge badge-{{ item.item_type }}'>{{ item.item_type | upper }}</span>
+    <h3><a href='{{ url_for("item_detail", item_id=item._id) }}'>{{ item.title }}</a></h3>
+    <p>{{ item.description[:100] }}...</p>
+    <p class='item-meta'>Location: {{ item.location }}</p>
+  </div>
+  {% else %}
+    <p>No items matched your search. Try a different keyword.</p>
+  {% endfor %}
+</div>
+{% endblock %}
+ 
