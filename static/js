@@ -1,0 +1,43 @@
+// Filter by category using URL redirect
+function filterCategory(value) {
+  const url = new URL(window.location.href);
+  if (value) {
+    url.searchParams.set('category', value);
+  } else {
+    url.searchParams.delete('category');
+  }
+  window.location.href = url.toString();
+}
+
+// Auto-dismiss flash alerts after 4 seconds
+document.addEventListener('DOMContentLoaded', function() {
+  const alerts = document.querySelectorAll('.alert');
+  alerts.forEach(function(alert) {
+    setTimeout(function() {
+      alert.style.transition = 'opacity 0.5s';
+      alert.style.opacity = '0';
+      setTimeout(() => alert.remove(), 500);
+    }, 4000);
+  });
+});
+
+// Preview image before uploading
+const imageInput = document.querySelector('input[type=file]');
+if (imageInput) {
+  imageInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      let preview = document.getElementById('img-preview');
+      if (!preview) {
+        preview = document.createElement('img');
+        preview.id = 'img-preview';
+        preview.style.cssText = 'width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:10px;';
+        imageInput.parentNode.appendChild(preview);
+      }
+      preview.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
