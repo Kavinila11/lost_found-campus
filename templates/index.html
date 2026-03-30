@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Browse Lost & Found Items{% endblock %}
+{% block content %}
+<div class='page-header'>
+  <h1>Browse Items</h1>
+  <a href='{{ url_for("post_item") }}' class='btn btn-primary'>+ Post an Item</a>
+</div>
+
+<div class='filters'>
+  <a href='/' class='filter-btn {% if not item_type %}active{% endif %}'>All</a>
+  <a href='/?type=lost' class='filter-btn {% if item_type=="lost" %}active{% endif %}'>Lost</a>
+  <a href='/?type=found' class='filter-btn {% if item_type=="found" %}active{% endif %}'>Found</a>
+  <select onchange='filterCategory(this.value)' class='filter-select'>
+    <option value=''>All Categories</option>
+    <option value='electronics'>Electronics</option>
+    <option value='clothing'>Clothing</option>
+    <option value='books'>Books</option>
+    <option value='accessories'>Accessories</option>
+    <option value='keys'>Keys</option>
+    <option value='other'>Other</option>
+  </select>
+</div>
+
+<div class='items-grid'>
+  {% for item in items %}
+  <div class='item-card {{ item.item_type }}'>
+    <span class='badge badge-{{ item.item_type }}'>{{ item.item_type | upper }}</span>
+    <span class='badge badge-{{ item.status }}'>{{ item.status | upper }}</span>
+    {% if item.image %}
+      <img src='/static/uploads/{{ item.image }}' alt='{{ item.title }}' class='item-img'>
+    {% else %}
+      <div class='item-img-placeholder'>No Image</div>
+    {% endif %}
+    <div class='item-info'>
+      <h3><a href='{{ url_for("item_detail", item_id=item._id) }}'>{{ item.title }}</a></h3>
+      <p class='item-meta'>Category: {{ item.category }}</p>
+      <p class='item-meta'>Location: {{ item.location }}</p>
+      <p class='item-meta'>Posted by: {{ item.posted_by_name }}</p>
+      <p class='item-meta'>Date: {{ item.posted_on.strftime('%d %b %Y') }}</p>
+    </div>
+  </div>
+  {% else %}
+    <p class='empty-msg'>No items found. Be the first to post one!</p>
+  {% endfor %}
+</div>
+{% endblock %}
