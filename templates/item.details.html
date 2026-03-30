@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.title }}{% endblock %}
+{% block content %}
+<div class='detail-container'>
+  <div class='detail-header'>
+    <span class='badge badge-{{ item.item_type }}'>{{ item.item_type | upper }}</span>
+    <span class='badge badge-{{ item.status }}'>{{ item.status | upper }}</span>
+    <h1>{{ item.title }}</h1>
+  </div>
+  <div class='detail-body'>
+    <div class='detail-image'>
+      {% if item.image %}
+        <img src='/static/uploads/{{ item.image }}' alt='{{ item.title }}'>
+      {% else %}
+        <div class='no-image'>No image provided</div>
+      {% endif %}
+    </div>
+    <div class='detail-info'>
+      <p><strong>Description:</strong> {{ item.description }}</p>
+      <p><strong>Category:</strong> {{ item.category }}</p>
+      <p><strong>Location:</strong> {{ item.location }}</p>
+      <p><strong>Date:</strong> {{ item.date_lost }}</p>
+      <p><strong>Posted by:</strong> {{ item.posted_by_name }}</p>
+      <p><strong>Posted on:</strong> {{ item.posted_on.strftime('%d %b %Y') }}</p>
+      {% if item.status == 'open' and current_user.is_authenticated
+            and current_user.id != item.posted_by %}
+        <div class='claim-box'>
+          <h3>Claim this Item</h3>
+          <form method='POST' action='/claim/{{ item._id }}'>
+            <textarea name='message' rows='3'
+              placeholder='Describe why this item belongs to you or how you found it...'></textarea>
+            <button type='submit' class='btn btn-primary'>Submit Claim</button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
