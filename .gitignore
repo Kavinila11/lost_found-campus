@@ -1,0 +1,25 @@
+# Virtual Environment
+venv/
+env/
+
+# Environment variables (IMPORTANT - secrets)
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Flask uploads (user images)
+static/uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files (VS Code)
+.vscode/
+
+# Logs
+*.log
