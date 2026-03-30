@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class='auth-container'>
+  <h2>Login to LostFound Campus</h2>
+  <form method='POST'>
+    <div class='form-group'>
+      <label>Email Address</label>
+      <input type='email' name='email' required placeholder='your@email.com'>
+    </div>
+    <div class='form-group'>
+      <label>Password</label>
+      <input type='password' name='password' required placeholder='Your password'>
+    </div>
+    <button type='submit' class='btn btn-primary btn-full'>Login</button>
+  </form>
+  <p class='auth-link'>Don't have an account? <a href='{{ url_for("register") }}'>Register here</a></p>
+</div>
+{% endblock %}
+
